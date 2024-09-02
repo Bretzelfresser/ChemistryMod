@@ -29,6 +29,8 @@ public class MappedInventory {
     public void addStack(ItemStack stack){
         if (!stacks.containsKey(stack.getItem())){
             stacks.put(stack.getItem(), Lists.newArrayList(stack));
+        }else {
+            stacks.get(stack.getItem()).add(stack);
         }
     }
 

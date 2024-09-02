@@ -82,6 +82,7 @@ public class ReactionChamberBlockEntity extends BlockEntity {
         }
         if (te.fuel > 0)
             te.fuel--;
+        te.setChanged();
     }
 
     protected boolean getOrCheckFuel(ReactionChamberRecipe recipe) {

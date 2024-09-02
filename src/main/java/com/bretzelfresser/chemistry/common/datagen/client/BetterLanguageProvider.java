@@ -1,5 +1,6 @@
 package com.bretzelfresser.chemistry.common.datagen.client;
 
+import com.bretzelfresser.chemistry.common.menu.UtilMenu;
 import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -119,6 +120,14 @@ public abstract class BetterLanguageProvider implements DataProvider {
 
     public void add(EntityType<?> key, String name) {
         add(key.getDescriptionId(), name);
+    }
+
+    public void simple(String key){
+        add(key, toTitleCase(key));
+    }
+
+    public void simpleMenuName(String key){
+        add(UtilMenu.makeTranslationKey(key), key);
     }
 
     public void add(String key, String value) {
