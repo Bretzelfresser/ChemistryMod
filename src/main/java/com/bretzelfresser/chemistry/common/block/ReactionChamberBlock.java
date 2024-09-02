@@ -1,31 +1,58 @@
 package com.bretzelfresser.chemistry.common.block;
 
 import com.bretzelfresser.chemistry.common.blockEntity.ReactionChamberBlockEntity;
-import com.bretzelfresser.chemistry.common.registries.ModBlockEntities;
+import com.bretzelfresser.chemistry.common.menu.ReactionChamberMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class ReactionChamberBlock extends HorizontalFacingBlock implements EntityBlock {
-    public ReactionChamberBlock(Properties p_54120_) {
+public abstract class ReactionChamberBlock extends HorizontalFacingBlock implements EntityBlock {
+
+    protected final int producAndEductSpace;
+
+    public ReactionChamberBlock(Properties p_54120_, int producAndEductSpace) {
         super(p_54120_);
+        this.producAndEductSpace = producAndEductSpace;
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (!pLevel.isClientSide){
+            BlockEntity te = pLevel.getBlockEntity(pPos);
+            if (te instanceof ReactionChamberBlockEntity reactionChamber){
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer1) -> new ReactionChamberMenu(pContainerId, pPlayerInventory, reactionChamber), getInventoryTitle()), pPos);
+            }
+        }
+        return InteractionResult.sidedSuccess(pLevel.isClientSide);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return null;
+        return getBlockEntityType().create(pos, state);
     }
+
+    public abstract Component getInventoryTitle();
+
+    public abstract <T extends ReactionChamberBlockEntity> BlockEntityType<T> getBlockEntityType();
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.NORMAL_REACTION_CHAMBER.get(), ReactionChamberBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, getBlockEntityType(), ReactionChamberBlockEntity::serverTick);
     }
 
     @Nullable

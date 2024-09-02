@@ -1,5 +1,7 @@
 package com.bretzelfresser.chemistry.common.menu;
 
+import com.bretzelfresser.chemistry.ChemistryMod;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -9,6 +11,13 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class UtilMenu extends AbstractContainerMenu {
+
+    public static String makeTranslationKey(String name){
+        return "menu." + ChemistryMod.MODID + "." + name;
+    }
+    public static Component makeTranslationComponent(String name){
+        return Component.translatable(makeTranslationKey(name));
+    }
 
     protected final Inventory playerInventory;
 

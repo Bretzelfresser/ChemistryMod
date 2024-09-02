@@ -1,5 +1,7 @@
 package com.bretzelfresser.chemistry.common.blockEntity;
 
+import com.bretzelfresser.chemistry.ChemistryMod;
+import com.bretzelfresser.chemistry.common.inventory.MappedInventory;
 import com.bretzelfresser.chemistry.common.recipe.ReactionChamberRecipe;
 import com.bretzelfresser.chemistry.common.registries.ModRecipes;
 import com.mojang.datafixers.util.Pair;
@@ -8,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -29,6 +32,34 @@ public class ReactionChamberBlockEntity extends BlockEntity {
     protected int maxProcessingTime = 1, processingTime = 0, maxFuel = 1, fuel = 0;
     protected final int productAndEducSpace;
 
+    protected ContainerData data = new ContainerData() {
+        @Override
+        public int get(int pIndex) {
+            return switch (pIndex) {
+                case 0 -> processingTime;
+                case 1 -> maxProcessingTime;
+                case 2 -> fuel;
+                case 3 -> maxFuel;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int pIndex, int pValue) {
+            switch (pIndex) {
+                case 0 -> processingTime = pValue;
+                case 1 -> maxProcessingTime = pValue;
+                case 2 -> fuel = pValue;
+                case 3 -> maxFuel = pValue;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+    };
+
     public ReactionChamberBlockEntity(BlockEntityType<?> pType, BlockPos p_155229_, BlockState p_155230_, int productAndEducSpace) {
         super(pType, p_155229_, p_155230_);
         this.productAndEducSpace = productAndEducSpace;
@@ -43,8 +74,9 @@ public class ReactionChamberBlockEntity extends BlockEntity {
             }
             if (te.processingTime >= te.maxProcessingTime) {
                 te.finishProcessing(recipe);
+            } else {
+                te.processingTime++;
             }
-            te.processingTime++;
         } else if (te.processingTime != 0) {
             te.resetProcessing();
         }
@@ -58,8 +90,12 @@ public class ReactionChamberBlockEntity extends BlockEntity {
         if (fuel > 0) {
             return true;
         } else {
-            maxFuel = ForgeHooks.getBurnTime(this.inventory.getStackInSlot(this.inventory.getSlots() - 1), ModRecipes.REACTION_CHAMBER_RECIPE.get());
-            fuel = maxFuel;
+            int burnTime = ForgeHooks.getBurnTime(this.inventory.getStackInSlot(this.inventory.getSlots() - 1), ModRecipes.REACTION_CHAMBER_RECIPE.get());
+            if (burnTime > 0) {
+                maxFuel = burnTime;
+                fuel = maxFuel;
+                this.inventory.getStackInSlot(this.inventory.getSlots() - 1).shrink(1);
+            }
         }
         return fuel > 0;
     }
@@ -71,10 +107,25 @@ public class ReactionChamberBlockEntity extends BlockEntity {
     protected void finishProcessing(ReactionChamberRecipe recipe) {
         resetProcessing();
         shrinkInputs(recipe);
+        growOutputs(recipe);
     }
 
-    protected void growOutputs(ReactionChamberRecipe recipe){
-
+    protected void growOutputs(ReactionChamberRecipe recipe) {
+        MappedInventory inv = new MappedInventory();
+        for (ItemStack stack : recipe.getOutputs()) {
+            inv.addStack(stack.copy());
+        }
+        for (int i = productAndEducSpace; i < this.inventory.getSlots() - 1; i++) {
+            inv.addStack(this.inventory.getStackInSlot(i));
+            this.inventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
+        List<ItemStack> finalStacks = inv.getAllSortedStacks();
+        if (finalStacks.size() > productAndEducSpace) {
+            throw new IllegalStateException(String.format("either the condition about the outputs didnt work cause the sorted and merged stacks had size : %s and we only had space for %s items", finalStacks.size(), productAndEducSpace));
+        }
+        for (int i = 0; i < finalStacks.size(); i++) {
+            this.inventory.setStackInSlot(i + productAndEducSpace, finalStacks.get(i));
+        }
     }
 
     protected void shrinkInputs(ReactionChamberRecipe recipe) {
@@ -138,6 +189,26 @@ public class ReactionChamberBlockEntity extends BlockEntity {
 
     public int getProductAndEducSpace() {
         return productAndEducSpace;
+    }
+
+    public ContainerData getData() {
+        return data;
+    }
+
+    public int getProcessingTime() {
+        return processingTime;
+    }
+
+    public int getMaxFuel() {
+        return maxFuel;
+    }
+
+    public int getFuel() {
+        return fuel;
+    }
+
+    public int getMaxProcessingTime() {
+        return maxProcessingTime;
     }
 
     @Override

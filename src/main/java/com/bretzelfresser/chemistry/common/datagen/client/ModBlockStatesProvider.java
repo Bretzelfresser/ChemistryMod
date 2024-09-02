@@ -17,7 +17,7 @@ public class ModBlockStatesProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        horizontalBlockWithParent(ModBlocks.REACTION_CHAMBER.get(), modLoc("reaction_chamber_prefab"), "texture", modLoc("block/reaction_chamber"));
+        horizontalBlockWithParent(ModBlocks.NORMAL_REACTION_CHAMBER.get(), modLoc("reaction_chamber_prefab"), "texture", modLoc("block/reaction_chamber"));
     }
 
     protected void horizontalBlockWithParent(Block block, ResourceLocation parent, String textureKey, ResourceLocation texture){

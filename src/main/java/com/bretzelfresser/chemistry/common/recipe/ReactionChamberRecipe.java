@@ -44,7 +44,7 @@ public class ReactionChamberRecipe implements Recipe<Container> {
         int productSpace = (container.getContainerSize() - 1) / 2;
         ItemStackHandler wrapper = new ItemStackHandler(productSpace);
         for (int i = productSpace; i < container.getContainerSize() - 1; i++) {
-            wrapper.setStackInSlot(i - productSpace, container.getItem(i));
+            wrapper.setStackInSlot(i - productSpace, container.getItem(i).copy());
         }
         if (inputs.size() > productSpace || outputs.size() > productSpace)
             return false;

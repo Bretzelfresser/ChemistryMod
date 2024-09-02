@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class MappedInventory {
 
@@ -66,5 +67,22 @@ public class MappedInventory {
                 finalStacks.add(saveToWorkWith);
         }
         return finalStacks;
+    }
+
+    public void forSortedAllStacks(Consumer<ItemStack> stackComsumer){
+        for (Item item : this.stacks.keySet()){
+            List<ItemStack> sroted = this.getSortedAndMergedStacks(item);
+            sroted.forEach(stackComsumer);
+        }
+    }
+
+
+    public List<ItemStack> getAllSortedStacks(){
+        List<ItemStack> stack = new ArrayList<>();
+        for (Item item : this.stacks.keySet()){
+            List<ItemStack> sroted = this.getSortedAndMergedStacks(item);
+            stack.addAll(sroted);
+        }
+        return stack;
     }
 }

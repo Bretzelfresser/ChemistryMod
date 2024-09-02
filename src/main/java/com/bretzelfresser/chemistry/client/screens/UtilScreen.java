@@ -23,6 +23,10 @@ public abstract class UtilScreen<T extends AbstractContainerMenu> extends Abstra
         this.imageHeight = imageHeight;
     }
 
+    public UtilScreen(T container, Inventory playerInventory, Component title) {
+        this(container, playerInventory, title, 176, 166);
+    }
+
 
     /**
      * this will draw the blank gui in the middle of the screen
@@ -49,11 +53,11 @@ public abstract class UtilScreen<T extends AbstractContainerMenu> extends Abstra
      */
     protected void drawNormalArrow(GuiGraphics graphics, int x, int y, double scale) {
         scale = Mth.clamp(scale, 0d, 1d);
-        graphics.blit(NORMAL_ARROW, x, y, 0, 0, 22, 16);
+        graphics.blit(NORMAL_ARROW, x, y, 0, 0, 22, 16, 44, 16);
         if (scale == 0)
             return;
         double arrowWidth = 22d * scale;
-        graphics.blit(NORMAL_ARROW, x, y, 22, 0, (int) arrowWidth, 16);
+        graphics.blit(NORMAL_ARROW, x, y, 22, 0, (int) arrowWidth, 16, 44, 16);
     }
 
     /**
@@ -63,11 +67,11 @@ public abstract class UtilScreen<T extends AbstractContainerMenu> extends Abstra
      */
     protected void drawLongArrow(GuiGraphics graphics, int x, int y, double scale) {
         scale = Mth.clamp(scale, 0d, 1d);
-        graphics.blit(LONG_ARROW, x, y, 0, 0, 44, 16);
+        graphics.blit(LONG_ARROW, x, y, 0, 0, 44, 16, 88, 16);
         if (scale == 0)
             return;
         double arrowWidth = 44d * scale;
-        graphics.blit(LONG_ARROW, x, y, 44, 0, (int) arrowWidth, 16);
+        graphics.blit(LONG_ARROW, x, y, 44, 0, (int) arrowWidth, 16, 88, 16);
     }
 
     /**
@@ -81,7 +85,7 @@ public abstract class UtilScreen<T extends AbstractContainerMenu> extends Abstra
         verticalAmount = Mth.clamp(verticalAmount, 1, 16);
         int width = 18 * horizontalAmount;
         int height = 18 * verticalAmount;
-        graphics.blit(SLOT_FIELD, x, y, 0, 0, width, height);
+        graphics.blit(SLOT_FIELD, x, y, 0, 0, width, height, 288, 288);
     }
 
     /**
@@ -93,12 +97,12 @@ public abstract class UtilScreen<T extends AbstractContainerMenu> extends Abstra
 
     protected void drawFlame(GuiGraphics graphics, int x, int y, double scale){
         scale = Mth.clamp(scale, 0d, 1d);
-        graphics.blit(FLAME, x, y, 0, 0, 16, 16);
+        graphics.blit(FLAME, x, y, 0, 0, 16, 16, 32, 16);
         if (scale == 0)
             return;
         double height = 16d * scale;
         int flameHeight = (int) Math.round(height);
-        graphics.blit(FLAME, x, y + 16 - flameHeight, 16, flameHeight, 16, flameHeight);
+        graphics.blit(FLAME, x, y + 16 - flameHeight, 16, 16 - flameHeight, 16, flameHeight, 32, 16);
     }
 
 

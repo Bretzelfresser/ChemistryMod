@@ -1,6 +1,7 @@
 package com.bretzelfresser.chemistry.common.registries;
 
 import com.bretzelfresser.chemistry.ChemistryMod;
+import com.bretzelfresser.chemistry.common.block.NormalReactionChamberBlock;
 import com.bretzelfresser.chemistry.common.block.ReactionChamberBlock;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
@@ -20,7 +21,7 @@ public class ModBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChemistryMod.MODID);
 
-    public static final RegistryObject<ReactionChamberBlock> REACTION_CHAMBER = registerWithTab("reaction_chamber", () -> new ReactionChamberBlock(BlockBehaviour.Properties.of().strength(5).dynamicShape().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final RegistryObject<ReactionChamberBlock> NORMAL_REACTION_CHAMBER = registerWithTab("reaction_chamber", () -> new NormalReactionChamberBlock(BlockBehaviour.Properties.of().strength(5).dynamicShape().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
 
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier) {

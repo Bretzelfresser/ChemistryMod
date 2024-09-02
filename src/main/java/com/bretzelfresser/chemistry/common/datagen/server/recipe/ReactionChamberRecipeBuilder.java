@@ -124,7 +124,7 @@ public class ReactionChamberRecipeBuilder {
             jsonObject.add("inputs", RecipeUtils.serializeList(inputs, RecipeUtils::serializeIngredientWithCount));
             jsonObject.add("outputs", RecipeUtils.serializeList(outputs, RecipeUtils::toJson));
             if (!this.needsEnergy) {
-                jsonObject.addProperty("neededEnergy", false);
+                jsonObject.addProperty("needsEnergy", false);
             }
             if (this.processingTime != 200) {
                 jsonObject.addProperty("processingTime", this.processingTime);

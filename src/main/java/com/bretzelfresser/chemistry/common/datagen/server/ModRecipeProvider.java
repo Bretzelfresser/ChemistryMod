@@ -16,6 +16,6 @@ public class ModRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> generator) {
-        ReactionChamberRecipeBuilder.builder(Items.CHARCOAL, 2).addInput(Items.COAL).addInput(ItemTags.PLANKS).setProcessingTime(400).build(generator, "charcoal_from_coal");
+        ReactionChamberRecipeBuilder.builder(Items.CHARCOAL, 4).addInput(Items.COAL).addInput(ItemTags.PLANKS, 2).setProcessingTime(400).doesntNeedEnergy().build(generator, "charcoal_from_coal");
     }
 }
