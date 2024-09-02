@@ -26,6 +26,7 @@ public class ChemistryMod {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZER.register(modEventBus);
         ModRecipes.RECIPE_TYPES.register(modEventBus);
+        ModCreativeModeTabs.TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

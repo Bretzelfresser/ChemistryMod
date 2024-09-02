@@ -17,6 +17,8 @@ public class ModItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChemistryMod.MODID);
 
+    public static final RegistryObject<Item> SULFUR = registerWithCreativeModeTab("sulfur", ModCreativeModeTabs.ITEMS, () -> new Item(new Item.Properties()));
+
 
     public static <T extends Item> RegistryObject<T> registerWithCreativeModeTab(String name, Supplier<CreativeModeTab> creativeModeTab, Supplier<T> itemGenerator) {
         RegistryObject<T> item = ITEMS.register(name, itemGenerator);

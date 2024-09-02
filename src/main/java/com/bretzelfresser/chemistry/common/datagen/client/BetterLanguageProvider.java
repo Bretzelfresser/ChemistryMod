@@ -1,17 +1,22 @@
 package com.bretzelfresser.chemistry.common.datagen.client;
 
 import com.bretzelfresser.chemistry.common.menu.UtilMenu;
+import com.bretzelfresser.chemistry.common.registries.ModCreativeModeTabs;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.nio.file.Path;
 import java.util.Map;
@@ -128,6 +133,12 @@ public abstract class BetterLanguageProvider implements DataProvider {
 
     public void simpleMenuName(String key){
         add(UtilMenu.makeTranslationKey(key), key);
+    }
+
+    public void simpleCreativeTab(RegistryObject<CreativeModeTab> tab){
+        ResourceLocation id = tab.getId();
+        String name = id.getPath();
+        add(ModCreativeModeTabs.createTranslationKey(name), toTitleCase(name));
     }
 
     public void add(String key, String value) {
