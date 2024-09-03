@@ -4,8 +4,7 @@ import com.bretzelfresser.chemistry.ChemistryMod;
 import com.bretzelfresser.chemistry.common.datagen.client.ModBlockStatesProvider;
 import com.bretzelfresser.chemistry.common.datagen.client.ModItemModelsProvider;
 import com.bretzelfresser.chemistry.common.datagen.client.ModLanguageProvider;
-import com.bretzelfresser.chemistry.common.datagen.server.ModLoot;
-import com.bretzelfresser.chemistry.common.datagen.server.ModRecipeProvider;
+import com.bretzelfresser.chemistry.common.datagen.server.*;
 import com.bretzelfresser.chemistry.common.datagen.server.loot.ModBlockLoot;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -28,5 +27,9 @@ public class DataGenerator {
         gen.addProvider(event.includeClient(), new ModLanguageProvider(output));
         gen.addProvider(event.includeServer(), new ModRecipeProvider(output));
         gen.addProvider(event.includeServer(), new ModLoot(output));
+
+        ModBlockTagsProvider provider = gen.addProvider(event.includeServer(), new ModBlockTagsProvider(output, event.getLookupProvider(), helper));
+        gen.addProvider(event.includeServer(), new ModItemTagsProvider(output, event.getLookupProvider(), provider.contentsGetter(), helper));
+        gen.addProvider(event.includeServer(), new ModDatapackProvider(output, event.getLookupProvider()));
     }
 }

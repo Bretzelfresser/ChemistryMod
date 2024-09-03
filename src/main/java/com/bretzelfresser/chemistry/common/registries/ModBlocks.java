@@ -10,7 +10,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -22,8 +24,11 @@ public class ModBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ChemistryMod.MODID);
 
-    public static final RegistryObject<ReactionChamberBlock> NORMAL_REACTION_CHAMBER = registerWithTab("normal_reaction_chamber", () -> new NormalReactionChamberBlock(BlockBehaviour.Properties.of().strength(5).dynamicShape().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    public static final RegistryObject<ReactionChamberBlock> BIG_REACTION_CHAMBER = registerWithTab("big_reaction_chamber", () -> new BigReactionChamber(BlockBehaviour.Properties.of().strength(15).dynamicShape().noOcclusion()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final RegistryObject<ReactionChamberBlock> NORMAL_REACTION_CHAMBER = registerWithTab("normal_reaction_chamber", () -> new NormalReactionChamberBlock(BlockBehaviour.Properties.of().strength(5).dynamicShape().noOcclusion().requiresCorrectToolForDrops()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+    public static final RegistryObject<ReactionChamberBlock> BIG_REACTION_CHAMBER = registerWithTab("big_reaction_chamber", () -> new BigReactionChamber(BlockBehaviour.Properties.of().strength(15).dynamicShape().noOcclusion().requiresCorrectToolForDrops()), CreativeModeTabs.FUNCTIONAL_BLOCKS);
+
+    public static final RegistryObject<DropExperienceBlock> SULFUR_ORE = registerWithTab("sulfur_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3).requiresCorrectToolForDrops()), ModCreativeModeTabs.BLOCKS);
+    public static final RegistryObject<DropExperienceBlock> DEEPSLATE_SULFUR_ORE = registerWithTab("deepslate_sulfur_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).strength(4.5f, 3f).requiresCorrectToolForDrops()), ModCreativeModeTabs.BLOCKS);
 
 
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier) {

@@ -16,6 +16,7 @@ public class ModCreativeModeTabs {
 
 
     public static final RegistryObject<CreativeModeTab> ITEMS = register("items", () -> CreativeModeTab.builder().icon(() -> ModItems.SULFUR.get().getDefaultInstance()));
+    public static final RegistryObject<CreativeModeTab> BLOCKS = register("blocks", () -> CreativeModeTab.builder().icon(() -> ModBlocks.SULFUR_ORE.get().asItem().getDefaultInstance()));
 
 
     public static RegistryObject<CreativeModeTab> register(String name, Supplier<CreativeModeTab.Builder> builder){

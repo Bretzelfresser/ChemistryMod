@@ -19,6 +19,7 @@ public class ModLanguageProvider extends BetterLanguageProvider {
         simpleMenuName("big_reaction_chamber");
 
         simpleCreativeTab(ModCreativeModeTabs.ITEMS);
+        simpleCreativeTab(ModCreativeModeTabs.BLOCKS);
     }
 
 
